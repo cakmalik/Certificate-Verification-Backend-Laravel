@@ -1,0 +1,11 @@
+1. clone from this repo
+2. cd into the folder
+4. create database mysql
+5. copy .env.example to .env
+6. run the following command:
+    $ composer install
+    $ php artisan key:generate
+    $ php artisan migrate:fresh --seed
+    $ php artisan passport:install
+    $ php artisan serve
+7. open http://localhost:8000/

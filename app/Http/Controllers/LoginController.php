@@ -21,8 +21,7 @@ class LoginController extends Controller
         }
         
         $user = User::where('email', $request->email)->first();
-        
-        if($user->role->name=='admin'){
+        if($user->role_id==1){
             if (!$user|| !Hash::check($request->password, $user->password)) {
                 return response()->json([
                     'success' => false,
