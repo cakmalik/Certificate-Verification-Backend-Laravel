@@ -13,40 +13,52 @@ class LoginController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
-            'password' => 'required'
+            // 'password' => 'required'
         ]);
-
+        
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
-
+        
         $user = User::where('email', $request->email)->first();
-
-        if (!$user || !Hash::check($request->password, $user->password)) {
+        
+        if($user->role->name=='admin'){
+            if (!$user|| !Hash::check($request->password, $user->password)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Login Failed!',
+                ]);
+            }
             return response()->json([
-                'success' => false,
-                'message' => 'Login Failed!',
+                'success' => true,
+                'isAdmin' => true,
+                'message' => 'Login Success!',
+                'data'    => $user,
+                'token'   => $user->createToken('authToken')->accessToken    
+            ]);
+        }else{
+            return response()->json([
+                'success' => true,
+                'isAdmin' => false,
+                'message' => 'Login Success!',
+                'data'    => $user,
+                'token'   => $user->createToken('authToken')->accessToken    
             ]);
         }
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Login Success!',
-            'data'    => $user,
-            'token'   => $user->createToken('authToken')->accessToken    
-        ]);
+        
+        
     }
     
     /**
-     * logout
-     *
-     * @param  mixed $request
-     * @return void
-     */
+    * logout
+    *
+    * @param  mixed $request
+    * @return void
+    */
     public function logout(Request $request)
     {
         $removeToken = $request->user()->tokens()->delete();
-
+        
         if($removeToken) {
             return response()->json([
                 'success' => true,
