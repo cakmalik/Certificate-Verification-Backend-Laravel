@@ -30,5 +30,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::put('/user/{id}', [UserController::class, 'update']);
     Route::delete('/user/{id}', [UserController::class, 'destroy']);
 
+    Route::put('/student/{student}/edit_score', [StudentController::class, 'updateScore']);
+    Route::get('/student/{student}/verified', [StudentController::class, 'verified']);
     Route::resource('/student', StudentController::class);
 });

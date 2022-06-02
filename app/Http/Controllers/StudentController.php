@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Score;
 use App\Models\Student;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
@@ -34,7 +36,8 @@ class StudentController extends Controller
     }
     public function show($id)
     {
-        $student = Student::find($id);
+        $student = Student::with('score')
+        ->find($id);
         return response()->json([
             'success' => true,
             'message' => 'Student retrieved successfully.',
@@ -56,8 +59,8 @@ class StudentController extends Controller
         $student->date_of_birth = $input['date_of_birth'];
         $student->parents_name = $input['parents_name'];
         $student->nis = $input['nis'];
+        $student->nisn = $input['nisn'];
         $student->isUpdate = true;
-        $student->isVerified = $input['isVerified'];
         $student->save();
 
         return response()->json([
@@ -72,6 +75,25 @@ class StudentController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Student deleted successfully.',
+            'data'    => $student
+        ]);
+    }
+    public function updateScore(Request $request, $id)
+    {
+        Score::where('student_id',$id)->update($request->all());
+        return response()->json([
+            'success' => true,
+            'message' => 'Student score updated successfully.',
+        ]);
+    }
+    public function verified($id)
+    {
+        $student = Student::find($id);
+        $student->isVerified = true;
+        $student->save();
+        return response()->json([
+            'success' => true,
+            'message' => 'Student verified successfully.',
             'data'    => $student
         ]);
     }

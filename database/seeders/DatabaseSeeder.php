@@ -6,6 +6,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Database\Seeders\RoleSeeder;
 use Database\Seeders\UserSeeder;
+use Database\Seeders\ScoreSeeder;
 use Database\Seeders\StudentSeeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
@@ -20,6 +21,6 @@ class DatabaseSeeder extends Seeder
     {
      $this->call(RoleSeeder::class);
      $this->call(UserSeeder::class);
-     $this->call(StudentSeeder::class);
+     $this->call(ScoreSeeder::class);
     }
 }

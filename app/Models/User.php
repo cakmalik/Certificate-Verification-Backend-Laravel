@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Models\Role;
+use App\Models\Score;
+use App\Models\Student;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -48,5 +50,13 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo(Role::class);
+    }
+    public function student()
+    {
+        return $this->hasOne(Student::class);
+    }
+    public function score()
+    {
+        return $this->hasMany(Score::class);
     }
 }

@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Score;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class ScoreSeeder extends Seeder
 {
@@ -14,6 +15,6 @@ class ScoreSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Score::factory(10)->create();
     }
 }
