@@ -36,12 +36,14 @@ class StudentController extends Controller
     }
     public function show($id)
     {
-        $student = Student::with('score')
-        ->find($id);
+        $student = Student::find($id);
+        $score = Score::where('user_id', $student->user_id)->first();
         return response()->json([
             'success' => true,
             'message' => 'Student retrieved successfully.',
-            'data'    => $student
+            'data'    => [
+                'student' => $student,
+                'score' => $score]
         ]);
     }
     public function update(UpdateStudentRequest $request, Student $student)
@@ -80,7 +82,8 @@ class StudentController extends Controller
     }
     public function updateScore(Request $request, $id)
     {
-        Score::where('student_id',$id)->update($request->all());
+        $student = Student::find($id);
+        Score::where('user_id',$student->user_id)->update($request->all());
         return response()->json([
             'success' => true,
             'message' => 'Student score updated successfully.',

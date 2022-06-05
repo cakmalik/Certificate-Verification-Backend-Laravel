@@ -29,6 +29,7 @@ class LoginController extends Controller
                     'message' => 'Login Failed!',
                 ]);
             }
+            $user = User::find($user->id);
             return response()->json([
                 'success' => true,
                 'isAdmin' => true,
