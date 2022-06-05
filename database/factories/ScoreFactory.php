@@ -19,7 +19,7 @@ class ScoreFactory extends Factory
     public function definition()
     {
         return [
-            'student_id' =>  Student::factory()->create()->id,
+            'user_id'=>User::all()->random()->id,
             'a1' => $this->faker->numberBetween(70, 100),
             'a2' => $this->faker->numberBetween(70, 100),
             'a3' => $this->faker->numberBetween(70, 100),
