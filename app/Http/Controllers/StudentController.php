@@ -38,7 +38,7 @@ class StudentController extends Controller
     public function show($id)
     {
         $student = Student::find($id);
-        $student['date_of_birth'] = Carbon::parse($student['date_of_birth'])->isoFormat('d MMMM Y');
+        // $student['date_of_birth'] = Carbon::parse($student['date_of_birth'])->isoFormat('d MMMM Y');
         $score = Score::where('user_id', $student->user_id)->first();
         return response()->json([
             'success' => true,
