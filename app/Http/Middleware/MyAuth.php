@@ -10,8 +10,8 @@ class MyAuth{
             return $next($request);
         }else{
             $id = Auth::guard('api')->user()->student->id;
-            $req = $request->route('student');
-            if($id!=$req){
+            $req = request()->route('student');
+            if($id!=$req->id){
                 return response()->json([
                     'success' => false,
                     'message' => 'Tak Olle Cong, Melihat Punya tetanggamu.'
