@@ -48,7 +48,7 @@ class StudentController extends Controller
                 'score' => $score]
         ]);
     }
-    public function update(UpdateStudentRequest $request, Student $student)
+    public function update(Request $request, $id)
     {
         $input = $request->all();
         $validator = Validator::make($input, [
@@ -58,6 +58,8 @@ class StudentController extends Controller
         if($validator->fails()){
             return $this->sendError('Validation Error.', $validator->errors());       
         }
+
+        $student = Student::find($id);
         $student->name = $input['name'];
         $student->place_of_birth = $input['place_of_birth'];
         $student->date_of_birth = Carbon::parse($input['date_of_birth'])->isoFormat('d MMMM Y');

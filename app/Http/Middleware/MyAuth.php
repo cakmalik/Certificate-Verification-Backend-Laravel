@@ -11,7 +11,7 @@ class MyAuth{
         }else{
             $id = Auth::guard('api')->user()->student->id;
             $req = request()->route('student');
-            if($id!=$req->id){
+            if($id!=(int)$req){
                 return response()->json([
                     'success' => false,
                     'message' => 'Tak Olle Cong, Melihat Punya tetanggamu.'
