@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
+use Carbon\Carbon;
 
 class StudentController extends Controller
 {
@@ -37,6 +38,7 @@ class StudentController extends Controller
     public function show($id)
     {
         $student = Student::find($id);
+        $student['date_of_birth'] = Carbon::parse($student['date_of_birth'])->isoFormat('d MMMM Y');
         $score = Score::where('user_id', $student->user_id)->first();
         return response()->json([
             'success' => true,
@@ -58,7 +60,7 @@ class StudentController extends Controller
         }
         $student->name = $input['name'];
         $student->place_of_birth = $input['place_of_birth'];
-        $student->date_of_birth = $input['date_of_birth'];
+        $student->date_of_birth = Carbon::parse($input['date_of_birth'])->isoFormat('d MMMM Y');
         $student->parents_name = $input['parents_name'];
         $student->nis = $input['nis'];
         $student->nisn = $input['nisn'];

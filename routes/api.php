@@ -23,14 +23,17 @@ Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth:api');
 
+Route::group(['middleware'=>'myAuth'], function(){
+    Route::resource('/student', StudentController::class);
+});
+
 Route::group(['middleware' => 'auth:api'], function () {
-    Route::get('/user', [UserController::class, 'index']);
-    Route::get('/user/{id}', [UserController::class, 'show']);
-    Route::post('/user', [UserController::class, 'store']);
-    Route::put('/user/{id}', [UserController::class, 'update']);
-    Route::delete('/user/{id}', [UserController::class, 'destroy']);
+    // Route::get('/user', [UserController::class, 'index']);
+    // // Route::get('/user/{id}', [UserController::class, 'show']);
+    // Route::post('/user', [UserController::class, 'store']);
+    // Route::put('/user/{id}', [UserController::class, 'update']);
+    // Route::delete('/user/{id}', [UserController::class, 'destroy']);
 
     Route::put('/student/{student}/edit_score', [StudentController::class, 'updateScore']);
     Route::get('/student/{student}/verified', [StudentController::class, 'verified']);
-    Route::resource('/student', StudentController::class);
 });
