@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\{Storage,File};
 
 class StudentController extends Controller
 {
@@ -38,14 +39,14 @@ class StudentController extends Controller
     public function show($id)
     {
         $student = Student::find($id);
-        // $student['date_of_birth'] = Carbon::parse($student['date_of_birth'])->isoFormat('d MMMM Y');
         $score = Score::where('user_id', $student->user_id)->first();
         return response()->json([
             'success' => true,
             'message' => 'Student retrieved successfully.',
             'data'    => [
                 'student' => $student,
-                'score' => $score]
+                'score' => $score,
+            ],
         ]);
     }
     public function update(Request $request, $id)
@@ -58,7 +59,7 @@ class StudentController extends Controller
         if($validator->fails()){
             return $this->sendError('Validation Error.', $validator->errors());       
         }
-
+        
         $student = Student::find($id);
         $student->name = $input['name'];
         $student->place_of_birth = $input['place_of_birth'];
@@ -68,7 +69,7 @@ class StudentController extends Controller
         $student->nisn = $input['nisn'];
         $student->isUpdate = true;
         $student->save();
-
+        
         return response()->json([
             'success' => true,
             'message' => 'Student updated successfully.',
@@ -103,5 +104,25 @@ class StudentController extends Controller
             'message' => 'Student verified successfully.',
             'data'    => $student
         ]);
+    }
+    
+    public function uploadTtd(Request $request, $id) 
+    {
+        $student = Student::find($id);
+
+        if($file = $request->file('image')){
+            $path = 'public/tandatangan/';
+            $file_name = time().$file->getClientOriginalName();
+            Storage::disk('local')->put($path.$file_name, File::get($file));
+
+            $student->signature = $file_name;
+            $student->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil Upload Tanda tangan',
+                'data'    => $student
+            ]);
+        }
     }
 }
